@@ -13,28 +13,27 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-
 @Data
 @Entity
-@Table(name="product_subcategory")
-public class ProductSubCategory {
+@Table(name = "product_rating")
+public class ProductRating {
 
-	
 
 	@Id
 	@GeneratedValue(strategy =GenerationType.IDENTITY)
-	@Column(name="sub_category_id")
-	private Integer subcategoryId;
+	@Column(name="rating_id")
+	private Integer ratingId;
 	
-	@Column(name="sub_category_name")
-	private String subcategoryName;
+	@Column(name="product_Id")
+	private Integer productId;
+	
+	@Column(name="product_rating")
+	private String productRating;
 	
 	
-	@Column(name="category_id")
-	private Integer category_Id;
+	@Column(name="feedback")
+	private String feedback;
 	
 	
-	@OneToMany
-	@JoinColumn(name="sub_category_id")
-	private List<Product> prodList; 
+
 }

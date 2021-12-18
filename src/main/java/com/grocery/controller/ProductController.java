@@ -21,24 +21,24 @@ public class ProductController {
 	private ProductRepository productRepository;
 	
 	
-	@GetMapping("/getall")
+	@GetMapping("/products")
 	public List<Product> getAllProduct()
 	{
 		return productRepository.findAll();
 	}
 	
-    @GetMapping(value ="/{productById}")
-	public Optional<Product> getProductByID(@PathVariable("productById") Integer id) {
+    @GetMapping(value ="/products/{productId}")
+	public Optional<Product> getProductByID(@PathVariable("productId") Integer id) {
 		return productRepository.findById(id);
 	}
     
     
-    @DeleteMapping(value ="/{deleteProductById}")
-	public void deleteProductByID(@PathVariable("deleteProductById") Integer id) {
+    @DeleteMapping(value ="/products/{productId}")
+	public void deleteProductByID(@PathVariable("productId") Integer id) {
 		 productRepository.deleteById(id); 
 	}
     
-    @PutMapping(value ="/update")
+    @PutMapping(value ="/products")
     public Product updateProductByID(@RequestBody Product product)
      {
     	Product prod = productRepository.findById(product.getProductId()).get();

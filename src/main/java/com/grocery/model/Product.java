@@ -1,10 +1,15 @@
 package com.grocery.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -36,17 +41,12 @@ public class Product {
 	@Column(name = "product_buying_price")
 	private Double productBuyingPrice;
 
-	@Column(name = "product_selling_price")
-	private Double productSellingPrice;
-
-	@Column(name = "product_offer_price")
-	private Double productOfferPrice;
 
 	@Column(name = "product_is_active")
 	private Boolean productIsActive;
 
-	@Column(name = "product_category_id")
-	private Integer productCategoryId;
 	
-	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="product_Id")
+	private List<ProductRating> prodRatingList; 	
 }

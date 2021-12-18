@@ -17,13 +17,13 @@ public class SubCategoryController {
 	@Autowired
 	private SubCategoryRepository subCategoryRepository;
 	
-	@GetMapping("/getallsubcategory")
+	@GetMapping("/categories/subcategories")
 	public List<ProductSubCategory> getAllProduct()
 	{
 		return subCategoryRepository.findAll();
 	}
 	
-	@GetMapping(value ="/getallsubcategory/{subCategoryId}")
+	@GetMapping(value ="/categories/subcategories/{subCategoryId}")
     public Optional<ProductSubCategory> getProductByCatID(@PathVariable("subCategoryId") Integer id)
 	{
     	return subCategoryRepository.findById(id);
