@@ -16,34 +16,30 @@ import com.grocery.repository.ProductRepository;
 
 @RestController
 public class ProductController {
-	
+
 	@Autowired
 	private ProductRepository productRepository;
-	
-	
+
 	@GetMapping("/products")
-	public List<Product> getAllProduct()
-	{
+	public List<Product> getAllProduct() {
 		return productRepository.findAll();
 	}
-	
-    @GetMapping(value ="/products/{productId}")
+
+	@GetMapping(value = "/products/{productId}")
 	public Optional<Product> getProductByID(@PathVariable("productId") Integer id) {
 		return productRepository.findById(id);
 	}
-    
-    
-    @DeleteMapping(value ="/products/{productId}")
+
+	@DeleteMapping(value = "/products/{productId}")
 	public void deleteProductByID(@PathVariable("productId") Integer id) {
-		 productRepository.deleteById(id); 
+		productRepository.deleteById(id);
 	}
-    
-    @PutMapping(value ="/products")
-    public Product updateProductByID(@RequestBody Product product)
-     {
-    	Product prod = productRepository.findById(product.getProductId()).get();
-    	prod.setProductName(product.getProductName());
-    	 return productRepository.save(prod);
-     }
-    
+
+	@PutMapping(value = "/products")
+	public Product updateProductByID(@RequestBody Product product) {
+		Product prod = productRepository.findById(product.getProductId()).get();
+		prod.setProductName(product.getProductName());
+		return productRepository.save(prod);
+	}
+
 }

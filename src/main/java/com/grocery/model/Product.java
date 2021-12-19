@@ -45,8 +45,11 @@ public class Product {
 	@Column(name = "product_is_active")
 	private Boolean productIsActive;
 
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="product_Id")
 	private List<ProductRating> prodRatingList; 	
+
+
+
 }
