@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,22 +22,27 @@ public class ProductCategoryController {
 	private ProductCategoryRepository productCategoryRepository;
 
 	@GetMapping(value = "/categories")
-	public List<ProductCategory> getAllProductCategory() {
+	public List<ProductCategory> getAllCategory() {
 		return productCategoryRepository.findAll();
 	}
 
 	@GetMapping(value = "/categories/{categoryId}")
-	public Optional<ProductCategory> getProductByCatID(@PathVariable("categoryId") Integer id) {
+	public Optional<ProductCategory> getCategoryId(@PathVariable("categoryId") Integer id) {
 		return productCategoryRepository.findById(id);
 	}
 
+	@PostMapping(value = "/categories")
+	public ProductCategory addProductCategory(@RequestBody ProductCategory productCategory) {
+		return productCategoryRepository.save(productCategory);
+	}
+
 	@DeleteMapping(value = "/categories/{categoryId}")
-	public void deleteProductByCatId(@PathVariable("categoryId") Integer id) {
+	public void deleteCategoryById(@PathVariable("categoryId") Integer id) {
 		productCategoryRepository.deleteById(id);
 	}
 
 	@PutMapping(value = "/categories")
-	public ProductCategory updateProductByCatId(@RequestBody ProductCategory productcategory) {
+	public ProductCategory updateCategoryById(@RequestBody ProductCategory productcategory) {
 		ProductCategory prodcat = productCategoryRepository.findById(productcategory.getCategoryId()).get();
 		prodcat.setCategoryName(productcategory.getCategoryName());
 		return productCategoryRepository.save(prodcat);

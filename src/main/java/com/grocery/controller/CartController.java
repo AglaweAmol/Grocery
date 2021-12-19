@@ -4,23 +4,22 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grocery.model.Cart;
-import com.grocery.model.Customer;
 import com.grocery.repository.CartRepository;
-import com.grocery.repository.CustomerRepository;
 
 @RestController
 public class CartController {
 
 	@Autowired
 	private CartRepository cartRepository;
-
-	@Autowired
-	private CustomerRepository customerRepository;
 
 	@GetMapping(value = "/cart")
 	public List<Cart> getAllCart() {
@@ -32,9 +31,25 @@ public class CartController {
 		return cartRepository.findById(cartId);
 	}
 
-	@GetMapping(value = "/customer/{customerId}")
-	public Optional<Customer> getCartByCustomerId(@PathVariable("customerId") Integer customerId) {
-		return customerRepository.findAllByCustomerId(customerId);
+	@PostMapping(value = "/cart")
+	public Cart addCart(@RequestBody Cart cart) {
+		return cartRepository.save(cart);
 	}
+
+	@PutMapping(value = "/cart")
+	public Cart updateCart(@RequestBody Cart cart) {
+		Cart carts = cartRepository.findById(cart.getCartId()).get();
+		carts.setCartProducts(cart.getCartProducts());
+		carts.setTotalPrice(cart.getTotalPrice());
+		carts.setCustomerId(cart.getCustomerId());
+		return cartRepository.save(cart);
+	}
+	
+	@DeleteMapping(value = "/cart/{cartId}")
+	public void deleteCartById(@PathVariable("cartId") Integer id) {
+		cartRepository.deleteById(id);
+	}
+
+	
 
 }
