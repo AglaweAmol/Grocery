@@ -22,12 +22,12 @@ public class SubCategoryController {
 	private SubCategoryRepository subCategoryRepository;
 
 	@GetMapping("/subcategories")
-	public List<ProductSubCategory> getAllProduct() {
+	public List<ProductSubCategory> getAllSubCategory() {
 		return subCategoryRepository.findAll();
 	}
 
 	@GetMapping(value = "/subcategories/{subCategoryId}")
-	public Optional<ProductSubCategory> getProductByCatID(@PathVariable("subCategoryId") Integer id) {
+	public Optional<ProductSubCategory> getSubCategoryById(@PathVariable("subCategoryId") Integer id) {
 		return subCategoryRepository.findById(id);
 	}
 
