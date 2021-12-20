@@ -21,7 +21,7 @@ public class CustomerController {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	@GetMapping("/customers")
+	@GetMapping(value="/customers")
 	public List<Customer> getAllCustomer() {
 		return customerRepository.findAll();
 	}
@@ -37,12 +37,12 @@ public class CustomerController {
 	}
 
 	@PutMapping(value = "/customers")
-	public Customer updateCustomer(@RequestBody Customer customer) {
-		Customer customers = customerRepository.findById(customer.getCustomerId()).get();
-		customers.setCart(customer.getCart());
-		customers.setCustomerName(customer.getCustomerName());
-		customers.setMobileNo(customer.getMobileNo());
-		return customerRepository.save(customer);
+	public Customer updateCustomer(@RequestBody Customer customerRequest) {
+		Customer customer = customerRepository.findById(customerRequest.getCustomerId()).get();
+		customer.setCart(customer.getCart());
+		customer.setCustomerName(customer.getCustomerName());
+		customer.setMobileNo(customer.getMobileNo());
+		return customerRepository.save(customerRequest);
 	}
 
 	@DeleteMapping(value = "/customers/{customerId}")
