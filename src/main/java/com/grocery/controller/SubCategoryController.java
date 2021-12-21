@@ -37,12 +37,12 @@ public class SubCategoryController {
 	}
 
 	@PutMapping(value = "/subcategories")
-	public ProductSubCategory updateSubCategory(@RequestBody ProductSubCategory productSubCategory) {
-		ProductSubCategory productSubCategories = subCategoryRepository.findById(productSubCategory.getSubcategoryId())
+	public ProductSubCategory updateSubCategory(@RequestBody ProductSubCategory productSubCategoryReq) {
+		ProductSubCategory productSubCategories = subCategoryRepository.findById(productSubCategoryReq.getSubcategoryId())
 				.get();
-		productSubCategories.setCategory_Id(productSubCategory.getCategory_Id());
-		productSubCategories.setSubcategoryName(productSubCategory.getSubcategoryName());
-		return subCategoryRepository.save(productSubCategory);
+		productSubCategories.setCategory_Id(productSubCategories.getCategory_Id());
+		productSubCategories.setSubcategoryName(productSubCategories.getSubcategoryName());
+		return subCategoryRepository.save(productSubCategoryReq);
 	}
 
 	@DeleteMapping(value = "/subcategories/{subCategoryId}")

@@ -44,8 +44,8 @@ public class ProductController {
 	@PutMapping(value = "/products")
 	public Product updateProductById(@RequestBody Product product) {
 		Product prod = productRepository.findById(product.getProductId()).get();
-		prod.setProductName(product.getProductName());
-		return productRepository.save(prod);
+		prod.setProductName(prod.getProductName());
+		return productRepository.save(product);
 	}
 
 }

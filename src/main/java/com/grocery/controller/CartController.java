@@ -37,12 +37,12 @@ public class CartController {
 	}
 
 	@PutMapping(value = "/cart")
-	public Cart updateCart(@RequestBody Cart cart) {
-		Cart carts = cartRepository.findById(cart.getCartId()).get();
-		carts.setCartProducts(cart.getCartProducts());
-		carts.setTotalPrice(cart.getTotalPrice());
-		carts.setCustomerId(cart.getCustomerId());
-		return cartRepository.save(cart);
+	public Cart updateCart(@RequestBody Cart cartRequest) {
+		Cart cart = cartRepository.findById(cartRequest.getCartId()).get();
+		cart.setCartProducts(cart.getCartProducts());
+		cart.setTotalPrice(cart.getTotalPrice());
+		cart.setCustomerId(cart.getCustomerId());
+		return cartRepository.save(cartRequest);
 	}
 	
 	@DeleteMapping(value = "/cart/{cartId}")

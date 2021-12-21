@@ -38,13 +38,13 @@ public class CustomerAddressController {
 	}
 
 	@PutMapping(value = "/customer-address")
-	public CustomerAddress updateCustomerAddresss(@RequestBody CustomerAddress customerAddress) {
-		CustomerAddress customersAddr = customerAddressRepository.findById(customerAddress.getCustAddressId()).get();
-		customersAddr.setCity(customerAddress.getCity());
-		customersAddr.setStreet(customerAddress.getStreet());
-		customersAddr.setState(customerAddress.getState());
-		customersAddr.setCountry(customerAddress.getCountry());
-		return customerAddressRepository.save(customerAddress);
+	public CustomerAddress updateCustomerAddresss(@RequestBody CustomerAddress customerAddressRequest) {
+		CustomerAddress customersAddr = customerAddressRepository.findById(customerAddressRequest.getCustAddressId()).get();
+		customersAddr.setCity(customersAddr.getCity());
+		customersAddr.setStreet(customersAddr.getStreet());
+		customersAddr.setState(customersAddr.getState());
+		customersAddr.setCountry(customersAddr.getCountry());
+		return customerAddressRepository.save(customerAddressRequest);
 	}
 
 	@DeleteMapping(value = "/customer-address/{customerAddressId}")

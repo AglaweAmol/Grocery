@@ -49,12 +49,12 @@ public class ProductRatingController {
 	}
 
 	@PutMapping(value = "/products-ratings")
-	public ProductRating updateProductRating(@RequestBody ProductRating productRating) {
-		ProductRating prodRatings = productRatingRepository.findById(productRating.getRatingId()).get();
-		prodRatings.setFeedback(productRating.getFeedback());
-		prodRatings.setProductRating(productRating.getProductRating());
-		productRating.setProductId(productRating.getProductId());
-		return productRatingRepository.save(productRating);
+	public ProductRating updateProductRating(@RequestBody ProductRating productRatingRequest) {
+		ProductRating prodRating = productRatingRepository.findById(productRatingRequest.getRatingId()).get();
+		prodRating.setFeedback(prodRating.getFeedback());
+		prodRating.setProductRating(prodRating.getProductRating());
+		prodRating.setProductId(prodRating.getProductId());
+		return productRatingRepository.save(productRatingRequest);
 	}
 
 	@DeleteMapping(value = "/products-ratings/{productRatingId}")
