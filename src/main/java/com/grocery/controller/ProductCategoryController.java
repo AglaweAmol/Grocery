@@ -42,10 +42,11 @@ public class ProductCategoryController {
 	}
 
 	@PutMapping(value = "/categories")
-	public ProductCategory updateCategoryById(@RequestBody ProductCategory productcategoryRequest) {
-		ProductCategory prodcat = productCategoryRepository.findById(productcategoryRequest.getCategoryId()).get();
-		prodcat.setCategoryName(prodcat.getCategoryName());
-		return productCategoryRepository.save(productcategoryRequest);
+	public ProductCategory updateCategoryById(@RequestBody ProductCategory productCategoryRequest) {
+		ProductCategory productCategory = productCategoryRepository.findById(productCategoryRequest.getCategoryId()).get();
+		productCategory.setCategoryName(productCategoryRequest.getCategoryName());
+		productCategory.setCategoryIsActive(productCategoryRequest.getCategoryIsActive());
+		return productCategoryRepository.save(productCategory);
 	}
 
 }

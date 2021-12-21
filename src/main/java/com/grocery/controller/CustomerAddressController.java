@@ -39,12 +39,12 @@ public class CustomerAddressController {
 
 	@PutMapping(value = "/customer-address")
 	public CustomerAddress updateCustomerAddresss(@RequestBody CustomerAddress customerAddressRequest) {
-		CustomerAddress customersAddr = customerAddressRepository.findById(customerAddressRequest.getCustAddressId()).get();
-		customersAddr.setCity(customersAddr.getCity());
-		customersAddr.setStreet(customersAddr.getStreet());
-		customersAddr.setState(customersAddr.getState());
-		customersAddr.setCountry(customersAddr.getCountry());
-		return customerAddressRepository.save(customerAddressRequest);
+		CustomerAddress customersAddress = customerAddressRepository.findById(customerAddressRequest.getCustAddressId()).get();
+		customersAddress.setCity(customerAddressRequest.getCity());
+		customersAddress.setStreet(customerAddressRequest.getStreet());
+		customersAddress.setState(customerAddressRequest.getState());
+		customersAddress.setCountry(customerAddressRequest.getCountry());
+		return customerAddressRepository.save(customersAddress);
 	}
 
 	@DeleteMapping(value = "/customer-address/{customerAddressId}")

@@ -40,8 +40,8 @@ public class SubCategoryController {
 	public ProductSubCategory updateSubCategory(@RequestBody ProductSubCategory productSubCategoryReq) {
 		ProductSubCategory productSubCategories = subCategoryRepository.findById(productSubCategoryReq.getSubcategoryId())
 				.get();
-		productSubCategories.setCategory_Id(productSubCategories.getCategory_Id());
-		productSubCategories.setSubcategoryName(productSubCategories.getSubcategoryName());
+		productSubCategories.setCategory_Id(productSubCategoryReq.getCategory_Id());
+		productSubCategories.setSubcategoryName(productSubCategoryReq.getSubcategoryName());
 		return subCategoryRepository.save(productSubCategoryReq);
 	}
 

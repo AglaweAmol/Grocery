@@ -28,6 +28,9 @@ public class Customer {
 
 	@Column(name = "mobile_no")
 	private Long mobileNo;
+	
+	@Column(name = "customer_is_active")
+	private Boolean customertIsActive;
 
 	@OneToOne
 	@JoinColumn(name = "customer_id", updatable = false, insertable = false)

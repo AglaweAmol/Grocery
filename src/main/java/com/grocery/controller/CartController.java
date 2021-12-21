@@ -39,10 +39,10 @@ public class CartController {
 	@PutMapping(value = "/cart")
 	public Cart updateCart(@RequestBody Cart cartRequest) {
 		Cart cart = cartRepository.findById(cartRequest.getCartId()).get();
-		cart.setCartProducts(cart.getCartProducts());
-		cart.setTotalPrice(cart.getTotalPrice());
-		cart.setCustomerId(cart.getCustomerId());
-		return cartRepository.save(cartRequest);
+		cart.setCartProducts(cartRequest.getCartProducts());
+		cart.setTotalPrice(cartRequest.getTotalPrice());
+		cart.setCustomerId(cartRequest.getCustomerId());
+		return cartRepository.save(cart);
 	}
 	
 	@DeleteMapping(value = "/cart/{cartId}")

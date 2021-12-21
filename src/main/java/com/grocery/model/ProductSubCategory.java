@@ -33,6 +33,9 @@ public class ProductSubCategory {
 	@Column(name="category_id")
 	private Integer category_Id;
 	
+	@Column(name = "sub_category_is_active")
+	private Boolean subCategoryIsActive;
+	
 	
 	@OneToMany
 	@JoinColumn(name="sub_category_id")

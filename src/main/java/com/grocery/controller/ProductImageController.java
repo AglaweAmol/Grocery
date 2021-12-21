@@ -39,9 +39,9 @@ public class ProductImageController {
 	@PutMapping(value = "/product-image")
 	public ProductImage updateProductImage(@RequestBody ProductImage productImageRequest) {
 		ProductImage productimage = productImageRepository.findById(productImageRequest.getImageId()).get();
-		productimage.setImageProductId(productimage.getImageProductId());
-		productimage.setImageUrl(productimage.getImageUrl());
-		return productImageRepository.save(productImageRequest);
+		productimage.setImageProductId(productImageRequest.getImageProductId());
+		productimage.setImageUrl(productImageRequest.getImageUrl());
+		return productImageRepository.save(productimage);
 	}
 
 	@DeleteMapping(value = "/product-image/{imageId}")

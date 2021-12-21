@@ -50,6 +50,8 @@ public class Product {
 	@JoinColumn(name="product_Id")
 	private List<ProductRating> prodRatingList; 	
 
-
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="product_Id")
+	private List<ProductImage> productImage;
 
 }

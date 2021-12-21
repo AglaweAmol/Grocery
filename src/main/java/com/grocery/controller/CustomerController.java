@@ -39,10 +39,10 @@ public class CustomerController {
 	@PutMapping(value = "/customers")
 	public Customer updateCustomer(@RequestBody Customer customerRequest) {
 		Customer customer = customerRepository.findById(customerRequest.getCustomerId()).get();
-		customer.setCart(customer.getCart());
-		customer.setCustomerName(customer.getCustomerName());
-		customer.setMobileNo(customer.getMobileNo());
-		return customerRepository.save(customerRequest);
+		customer.setCart(customerRequest.getCart());
+		customer.setCustomerName(customerRequest.getCustomerName());
+		customer.setMobileNo(customerRequest.getMobileNo());
+		return customerRepository.save(customer);
 	}
 
 	@DeleteMapping(value = "/customers/{customerId}")

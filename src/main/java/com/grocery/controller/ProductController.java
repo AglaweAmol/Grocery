@@ -23,7 +23,7 @@ public class ProductController {
 
 	@GetMapping("/products")
 	public List<Product> getAllProduct() {
-		return productRepository.findAll();
+		return productRepository.findAllByProductIsActiveTrue();
 	}
 
 	@GetMapping(value = "/products/{productId}")
@@ -42,9 +42,12 @@ public class ProductController {
 	}
 
 	@PutMapping(value = "/products")
-	public Product updateProductById(@RequestBody Product product) {
-		Product prod = productRepository.findById(product.getProductId()).get();
-		prod.setProductName(prod.getProductName());
+	public Product updateProductById(@RequestBody Product productRequest) {
+		Product product = productRepository.findById(productRequest.getProductId()).get();
+		product.setProductName(productRequest.getProductName());
+		product.setProductDescription(productRequest.getProductDescription());
+		product.setProductAvailableQuantity(productRequest.getProductAvailableQuantity());
+		product.setProductIsActive(productRequest.getProductIsActive());
 		return productRepository.save(product);
 	}
 
