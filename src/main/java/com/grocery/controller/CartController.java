@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grocery.model.Cart;
 import com.grocery.repository.CartRepository;
 
 @RestController
+@RequestMapping("/api/v1")
 public class CartController {
 
 	@Autowired
@@ -44,12 +46,12 @@ public class CartController {
 		cart.setCustomerId(cartRequest.getCustomerId());
 		return cartRepository.save(cart);
 	}
-	
+
 	@DeleteMapping(value = "/cart/{cartId}")
 	public void deleteCartById(@PathVariable("cartId") Integer id) {
 		cartRepository.deleteById(id);
 	}
 
-	
+
 
 }
