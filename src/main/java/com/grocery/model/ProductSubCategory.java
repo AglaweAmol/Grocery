@@ -19,24 +19,24 @@ import lombok.Data;
 @Table(name="product_subcategory")
 public class ProductSubCategory {
 
-	
+
 
 	@Id
 	@GeneratedValue(strategy =GenerationType.IDENTITY)
 	@Column(name="sub_category_id")
 	private Integer subcategoryId;
-	
+
 	@Column(name="sub_category_name")
 	private String subcategoryName;
-	
-	
+
+
 	@Column(name="category_id")
-	private Integer category_Id;
-	
+	private Integer categoryId;
+
 	@Column(name = "sub_category_is_active")
 	private Boolean subCategoryIsActive;
-	
-	
+
+
 	@OneToMany
 	@JoinColumn(name="sub_category_id")
 	private List<Product> prodList; 

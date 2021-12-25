@@ -21,10 +21,17 @@ public class SubCategoryController {
 	@Autowired
 	private SubCategoryRepository subCategoryRepository;
 
+	//	@GetMapping("/subcategories")
+	//	public List<ProductSubCategory> getAllSubCategory() {
+	//		return subCategoryRepository.findAll();
+	//	}
+
 	@GetMapping("/subcategories")
 	public List<ProductSubCategory> getAllSubCategory() {
-		return subCategoryRepository.findAll();
+		return subCategoryRepository.findAllBySubCategoryIsActiveTrue();
 	}
+
+
 
 	@GetMapping(value = "/subcategories/{subCategoryId}")
 	public Optional<ProductSubCategory> getSubCategoryById(@PathVariable("subCategoryId") Integer id) {
@@ -40,7 +47,7 @@ public class SubCategoryController {
 	public ProductSubCategory updateSubCategory(@RequestBody ProductSubCategory productSubCategoryReq) {
 		ProductSubCategory productSubCategories = subCategoryRepository.findById(productSubCategoryReq.getSubcategoryId())
 				.get();
-		productSubCategories.setCategory_Id(productSubCategoryReq.getCategory_Id());
+		productSubCategories.setCategoryId(productSubCategoryReq.getCategoryId());
 		productSubCategories.setSubcategoryName(productSubCategoryReq.getSubcategoryName());
 		return subCategoryRepository.save(productSubCategoryReq);
 	}

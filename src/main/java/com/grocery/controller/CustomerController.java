@@ -21,10 +21,16 @@ public class CustomerController {
 	@Autowired
 	private CustomerRepository customerRepository;
 
+	//	@GetMapping(value="/customers")
+	//	public List<Customer> getAllCustomer() {
+	//		return customerRepository.findAll();
+	//	}
+
 	@GetMapping(value="/customers")
 	public List<Customer> getAllCustomer() {
-		return customerRepository.findAll();
+		return customerRepository.findAllByCustomertIsActiveTrue();
 	}
+
 
 	@GetMapping(value = "/customers/{customerId}")
 	public Optional<Customer> getCustomersById(@PathVariable("customerId") Integer customerId) {

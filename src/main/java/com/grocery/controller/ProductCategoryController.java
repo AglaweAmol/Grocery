@@ -21,9 +21,14 @@ public class ProductCategoryController {
 	@Autowired
 	private ProductCategoryRepository productCategoryRepository;
 
+	//	@GetMapping(value = "/categories")
+	//	public List<ProductCategory> getAllCategory() {
+	//		return productCategoryRepository.findAll();
+	//	}
+
 	@GetMapping(value = "/categories")
 	public List<ProductCategory> getAllCategory() {
-		return productCategoryRepository.findAll();
+		return productCategoryRepository.findAllByCategoryIsActiveTrue();
 	}
 
 	@GetMapping(value = "/categories/{categoryId}")
