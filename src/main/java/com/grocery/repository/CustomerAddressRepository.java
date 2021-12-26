@@ -8,4 +8,6 @@ import com.grocery.model.CustomerAddress;
 @Repository
 public interface CustomerAddressRepository extends JpaRepository<CustomerAddress, Integer> {
 
+	CustomerAddress findByCustomerId(Integer customerId);
+
 }

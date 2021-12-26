@@ -43,10 +43,10 @@ public class Order {
 	@Column(name="order_date")
 	private Date orderDate;
 
-
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="order_id")
 	private List<Invoice> invoiceList; 	
+
 
 
 

@@ -1,7 +1,6 @@
 package com.grocery.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grocery.model.Order;
+import com.grocery.model.OrderResponseModel;
+import com.grocery.repository.CustomerAddressRepository;
 import com.grocery.repository.OrderRepository;
 
 @RestController
@@ -23,20 +24,42 @@ public class OrderController {
 	@Autowired
 	private OrderRepository orderRepository;
 
-	@GetMapping(value = "/orders")
-	public List<Order> getAllOrder() {
+	@Autowired
+	private CustomerAddressRepository customerAddressRepository;
+	//
+	//	@GetMapping(value = "/orders")
+	//	public List<OrderResponseModel> getAllOrder() {
+	//		List<Order> order=orderRepository.findAll();
+	//		OrderResponseModel orderResponse =new OrderResponseModel();
+	//		orderResponse.setOrder(order);
+	//		System.out.println(order);
+	//
+	//		return null;
+	//	}
 
-		return orderRepository.findAll();
-	}
 
+	//	@GetMapping(value="/orders")
+	//	public List<OrderResponseModel> getAllOrderById()
+	//	{
+	//		List<Order> order = orderRepository.findAll();
+	//		List<OrderResponseModel> orderResponse = new ArrayList<>();
+	//		orderResponse.setOrder(order);
+	//		System.out.println(orderResponse.add(order));
+	//		return orderResponse;
+	//
+	//	}
 	@GetMapping(value="/orders/{orderId}")
-	public Optional<Order> getAllOrderById(@PathVariable ("orderId") Integer id)
+	public OrderResponseModel getAllOrderById(@PathVariable ("orderId") Integer id)
 	{
-		return orderRepository.findById(id);
+		Order order = orderRepository.findById(id).get();
+		OrderResponseModel orderResponse = new OrderResponseModel();
+		orderResponse.setOrder(order);
+		orderResponse.setCustomerAddress(customerAddressRepository.findByCustomerId(order.getCustomerId()));
+		return orderResponse;
 	}
 
 	@GetMapping(value="/orders/customer/{customerId}")
-	public Optional<Order> getAllOrderByCustomerId(@PathVariable ("customerId") Integer id)
+	public List<Order> getAllOrderByCustomerId(@PathVariable ("customerId") Integer id)
 	{
 		return orderRepository.findAllOrdersByCustomerId(id);
 	}
