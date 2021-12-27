@@ -33,6 +33,12 @@ public class CustomerAddressController {
 			@PathVariable("customerAddressId") Integer customerAddressId) {
 		return customerAddressRepository.findById(customerAddressId);
 	}
+	
+	@GetMapping(value = "/customer-address/customer/{customerId}")
+	public List<CustomerAddress> getCustomersAddressByCustomerId(@PathVariable("customerId") Integer customerId) {
+		return customerAddressRepository.findByCustomerId(customerId);
+	}
+	
 
 	@PostMapping(value = "/customer-address")
 	public CustomerAddress addCustomerAddress(@RequestBody CustomerAddress customerAddress) {

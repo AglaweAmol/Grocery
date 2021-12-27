@@ -2,6 +2,7 @@ package com.grocery.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,18 +23,18 @@ public class Cart {
 
 	@Id
 	@GeneratedValue(strategy =GenerationType.IDENTITY)
-	@Column(name="cart_Id")
+	@Column(name="cart_id")
 	private Integer cartId;
 
-	@Column(name="customer_Id")
+	@Column(name="customer_id")
 	private Integer customerId;
 
-	@Column(name="total_Price")
+	@Column(name="total_price")
 	private Integer totalPrice;
 
-	@OneToMany
-	@JoinColumn(name ="cart_Id")
-	@JsonIgnoreProperties({"cartProductId","cartId","productId","cart"})
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name ="cart_id")
+	@JsonIgnoreProperties({"cartProductId","cartId","cart"})
 	private List<CartProduct> cartProducts;
 
 

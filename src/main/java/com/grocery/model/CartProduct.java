@@ -1,5 +1,6 @@
 package com.grocery.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,11 +29,12 @@ public class CartProduct {
 	@Column(name = "product_id")
 	private Integer productId;
 
-	@OneToOne
-	@JoinColumn(name = "cart_Id", updatable = false, insertable = false)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "cart_id", updatable = false, insertable = false)
+	@JsonIgnoreProperties("cartProducts")
 	private Cart cart;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "product_id", updatable = false, insertable = false)
 	@JsonIgnoreProperties("prodRatingList")
 	private Product product;

@@ -35,6 +35,8 @@ public class CartController {
 
 	@PostMapping(value = "/cart")
 	public Cart addCart(@RequestBody Cart cart) {
+		
+		System.out.println("CartObject"+cart);
 		return cartRepository.save(cart);
 	}
 

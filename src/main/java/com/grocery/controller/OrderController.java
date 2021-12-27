@@ -1,5 +1,6 @@
 package com.grocery.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,54 +28,67 @@ public class OrderController {
 	@Autowired
 	private CustomerAddressRepository customerAddressRepository;
 	//
-	//	@GetMapping(value = "/orders")
-	//	public List<OrderResponseModel> getAllOrder() {
-	//		List<Order> order=orderRepository.findAll();
-	//		OrderResponseModel orderResponse =new OrderResponseModel();
-	//		orderResponse.setOrder(order);
-	//		System.out.println(order);
+	// @GetMapping(value = "/orders")
+	// public List<OrderResponseModel> getAllOrder() {
+	// List<Order> order=orderRepository.findAll();
+	// OrderResponseModel orderResponse =new OrderResponseModel();
+	// orderResponse.setOrder(order);
+	// System.out.println(order);
 	//
-	//		return null;
-	//	}
+	// return null;
+	// }
 
+	@GetMapping(value = "/orders")
+	public List<OrderResponseModel> getAllOrderById() {
+		List<Order> orderList = orderRepository.findAll();
+		List<OrderResponseModel> orderResponseList = new ArrayList<>();
 
-	//	@GetMapping(value="/orders")
-	//	public List<OrderResponseModel> getAllOrderById()
-	//	{
-	//		List<Order> order = orderRepository.findAll();
-	//		List<OrderResponseModel> orderResponse = new ArrayList<>();
-	//		orderResponse.setOrder(order);
-	//		System.out.println(orderResponse.add(order));
-	//		return orderResponse;
-	//
-	//	}
-	@GetMapping(value="/orders/{orderId}")
-	public OrderResponseModel getAllOrderById(@PathVariable ("orderId") Integer id)
-	{
+		orderList.forEach(orderObject -> {
+			OrderResponseModel orderResponseModel = new OrderResponseModel();
+			orderResponseModel.setOrder(orderObject);
+			orderResponseModel.setCustomerAddress(
+					customerAddressRepository.findByCustAddressId(orderObject.getCustomerAddressID()));
+			orderResponseList.add(orderResponseModel);
+		});
+
+		return orderResponseList;
+
+	}
+
+	@GetMapping(value = "/orders/{orderId}")
+	public OrderResponseModel getAllOrderById(@PathVariable("orderId") Integer id) {
 		Order order = orderRepository.findById(id).get();
 		OrderResponseModel orderResponse = new OrderResponseModel();
 		orderResponse.setOrder(order);
-		orderResponse.setCustomerAddress(customerAddressRepository.findByCustomerId(order.getCustomerId()));
+		orderResponse.setCustomerAddress(customerAddressRepository.findByCustAddressId(order.getCustomerAddressID()));
 		return orderResponse;
 	}
 
-	@GetMapping(value="/orders/customer/{customerId}")
-	public List<Order> getAllOrderByCustomerId(@PathVariable ("customerId") Integer id)
-	{
-		return orderRepository.findAllOrdersByCustomerId(id);
+	@GetMapping(value = "/orders/customer/{customerId}")
+	public List<OrderResponseModel> getAllOrderByCustomerId(@PathVariable("customerId") Integer id) {
+		
+		List<Order> orderList = orderRepository.findAllOrdersByCustomerId(id);
+		List<OrderResponseModel> orderResponseList = new ArrayList<>();
+		orderList.forEach(orderObject -> {
+			OrderResponseModel orderResponseModel = new OrderResponseModel();
+			orderResponseModel.setOrder(orderObject);
+			orderResponseModel.setCustomerAddress(
+					customerAddressRepository.findByCustAddressId(orderObject.getCustomerAddressID()));
+			orderResponseList.add(orderResponseModel);
+		});
+		
+		
+		return orderResponseList;
 	}
 
-
-	@PostMapping(value="/orders")
-	public Order addOrder(@RequestBody Order order)
-	{
+	@PostMapping(value = "/orders")
+	public Order addOrder(@RequestBody Order order) {
 		return orderRepository.save(order);
 	}
 
-	@PutMapping(value="/orders")
-	public Order updateOrder(@RequestBody Order orderRequest)
-	{
-		Order order=orderRepository.findById(orderRequest.getOrderId()).get();
+	@PutMapping(value = "/orders")
+	public Order updateOrder(@RequestBody Order orderRequest) {
+		Order order = orderRepository.findById(orderRequest.getOrderId()).get();
 		order.setCustomerId(orderRequest.getCustomerId());
 		order.setOrderStatus(orderRequest.getOrderStatus());
 		order.setOrderTotal(orderRequest.getOrderTotal());
@@ -82,8 +96,8 @@ public class OrderController {
 		return orderRepository.save(order);
 	}
 
-	@DeleteMapping(value="/orders/{orderId}")
-	public void deleteOrderById(@PathVariable ("orderId") Integer id) {
+	@DeleteMapping(value = "/orders/{orderId}")
+	public void deleteOrderById(@PathVariable("orderId") Integer id) {
 		orderRepository.deleteById(id);
 	}
 
