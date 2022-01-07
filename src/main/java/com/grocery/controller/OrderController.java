@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.grocery.model.Cart;
 import com.grocery.model.Order;
 import com.grocery.model.OrderResponseModel;
+import com.grocery.repository.CartRepository;
 import com.grocery.repository.CustomerAddressRepository;
 import com.grocery.repository.OrderRepository;
 
@@ -27,6 +29,10 @@ public class OrderController {
 
 	@Autowired
 	private CustomerAddressRepository customerAddressRepository;
+	
+	@Autowired
+	private CartRepository cartRepository;
+	
 	//
 	// @GetMapping(value = "/orders")
 	// public List<OrderResponseModel> getAllOrder() {
@@ -82,8 +88,13 @@ public class OrderController {
 	}
 
 	@PostMapping(value = "/orders")
-	public Order addOrder(@RequestBody Order order) {
-		return orderRepository.save(order);
+	public Order addOrder(@RequestBody Order orderRequest) {
+		Order order=orderRepository.save(orderRequest);
+		List<Cart> cartList=cartRepository.findByCustomerId(orderRequest.getCustomerId());
+		cartRepository.deleteAll(cartList);
+//       System.out.println("cartId=>"+cartList.get(0).getCartId());
+		return order;
+		
 	}
 
 	@PutMapping(value = "/orders")
