@@ -34,7 +34,7 @@ public class CartProduct {
 	@JsonIgnoreProperties("cartProducts")
 	private Cart cart;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "product_id", updatable = false, insertable = false)
 	@JsonIgnoreProperties("prodRatingList")
 	private Product product;
