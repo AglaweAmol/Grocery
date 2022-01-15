@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.grocery.model.Cart;
 import com.grocery.model.Invoice;
 import com.grocery.model.Order;
 import com.grocery.model.OrderResponseModel;
@@ -99,48 +98,53 @@ public class OrderController {
 
 	@PostMapping(value = "/orders")
 	public Order addOrder(@RequestBody Order orderRequest) {
-		List<Invoice> invlist = orderRequest.getInvoiceList();
-		
-		
-		List<Invoice> mylist= new ArrayList<Invoice>();
+		List<Invoice> orderList = orderRequest.getInvoiceList();
+
+		List<Invoice> invoiceList = new ArrayList<Invoice>();
 		boolean isAdd = false;
-//		Scenario 1 -
-//		for (Invoice i : invlist) {
-//			Integer productId = i.getProductId();
-//			Integer productQuantity = i.getQuantity();
-////			System.out.println("Proudct Id=>" + productId);
-////			System.out.println("Invoice Proudct Quantity=>" + productQuantity);
-//			Optional<Product> prod = productRepository.findById(productId);
-//			Integer productAvailableQunatity = prod.get().getProductAvailableQuantity();
-//			System.out.println("Product Available Quantity is=>" + productAvailableQunatity);
-//
-//			if (productAvailableQunatity < productQuantity) {
-//				isAdd = false;
-//				System.out.println("Check condidtion is False or true=>"+isAdd);
-////				System.out.println("Product Available Qunatity=>" + productAvailableQunatity);
-////				System.out.println("Requested quantity is too high. Order cannot be saved!");
-//			} else {
-//
-////				System.out.println("Order Saved!");
-//			}
-//		}
-//		if (isAdd == false) {
-//			System.out.println("Order not Saved!");
-//		} else {
-////			System.out.println("Order Saved!");
-//			orderRepository.save(orderRequest);
-//		}
-//		*/
+		Integer sum = 0;
+		// Scenario 1 -
+		// for (Invoice i : invlist) {
+		// Integer productId = i.getProductId();
+		// Integer productQuantity = i.getQuantity();
+		//// System.out.println("Proudct Id=>" + productId);
+		//// System.out.println("Invoice Proudct Quantity=>" + productQuantity);
+		// Optional<Product> prod = productRepository.findById(productId);
+		// Integer productAvailableQunatity = prod.get().getProductAvailableQuantity();
+		// System.out.println("Product Available Quantity is=>" +
+		// productAvailableQunatity);
+		//
+		// if (productAvailableQunatity < productQuantity) {
+		// isAdd = false;
+		// System.out.println("Check condidtion is False or true=>"+isAdd);
+		//// System.out.println("Product Available Qunatity=>" +
+		// productAvailableQunatity);
+		//// System.out.println("Requested quantity is too high. Order cannot be
+		// saved!");
+		// } else {
+		//
+		//// System.out.println("Order Saved!");
+		// }
+		// }
+		// if (isAdd == false) {
+		// System.out.println("Order not Saved!");
+		// } else {
+		//// System.out.println("Order Saved!");
+		// orderRepository.save(orderRequest);
+		// }
+		// */
 		// scenario 2 - Start
-		
-		for (Invoice i : invlist) {
+
+		for (Invoice i : orderList) {
 			Integer productId = i.getProductId();
 			Integer productQuantity = i.getQuantity();
-			System.out.println("Proudct Id=>" + productId);
-			System.out.println("Invoice Proudct Quantity=>" + productQuantity);
+			// System.out.println("Proudct Id=>" + productId);
+			// System.out.println("Invoice Proudct Quantity=>" + productQuantity);
 			Optional<Product> prod = productRepository.findById(productId);
+
 			Integer productAvailableQunatity = prod.get().getProductAvailableQuantity();
-			System.out.println("Product Available Quantity is=>" + productAvailableQunatity);
+			// System.out.println("Product Available Quantity is=>" +
+			// productAvailableQunatity);
 
 			if (productAvailableQunatity < productQuantity) {
 				isAdd = false;
@@ -148,24 +152,25 @@ public class OrderController {
 				System.out.println("Requested quantity is too high. Order cannot be saved!");
 			} else {
 
-				System.out.println("Order Saved!");
-				mylist.add(i);
-				
-			orderRequest.setInvoiceList(mylist);
+				sum = sum + productQuantity;
+
+				Integer cal = productAvailableQunatity - productQuantity;
+				prod.get().setProductAvailableQuantity(cal);
+				invoiceList.add(i);
+				orderRequest.setInvoiceList(invoiceList);
 			}
 		}
-		
-		//scenario 2 end
-		
-//		System.out.println(mylist.toString());
-		
-		orderRequest.setInvoiceList(mylist);
-//		System.out.println(orderRequest);
-		orderRepository.save(orderRequest);		
-		
 
-//		cartRepository.deleteAll(cartList);
-//       System.out.println("cartId=>"+cartList.get(0).getCartId());
+		// scenario 2 end
+
+		// System.out.println(mylist.toString());
+		orderRequest.setOrderTotalQuantity(sum);
+		orderRequest.setInvoiceList(invoiceList);
+		System.out.println(orderRequest);
+		// orderRepository.save(orderRequest);
+
+		// cartRepository.deleteAll(cartList);
+		// System.out.println("cartId=>"+cartList.get(0).getCartId());
 		return null;
 
 	}
