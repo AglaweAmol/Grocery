@@ -120,7 +120,6 @@ public class OrderController {
 				System.out.println("Check condidtion is False or true=>" + isCheckProductQuantity);
 			} else {
 				orderTotalQuantity = orderTotalQuantity + productQuantity;
-
 				Integer productAvailableQuantity = productAvailableQunatity - productQuantity;
 				prod.get().setProductAvailableQuantity(productAvailableQuantity);
 				invoiceList.add(i);
@@ -138,47 +137,6 @@ public class OrderController {
 			cartRepository.deleteAll(cartList);
 			return orderRequest;
 		}
-
-		// scenario 2 - Start
-
-		// for (Invoice i : orderInvoiceList) {
-		// Integer productId = i.getProductId();
-		// Integer productQuantity = i.getQuantity();
-		// // System.out.println("Proudct Id=>" + productId);
-		// // System.out.println("Invoice Proudct Quantity=>" + productQuantity);
-		// Optional<Product> prod = productRepository.findById(productId);
-		//
-		// Integer productAvailableQunatity = prod.get().getProductAvailableQuantity();
-		// // System.out.println("Product Available Quantity is=>" +
-		// // productAvailableQunatity);
-		//
-		// if (productAvailableQunatity < productQuantity) {
-		// isCheckProductQuantity = false;
-		// System.out.println("Product Available Qunatity=>" +
-		// productAvailableQunatity);
-		// System.out.println("Requested quantity is too high. Order cannot be saved!");
-		// } else {
-		//
-		// orderTotalQuantity = orderTotalQuantity + productQuantity;
-		//
-		// Integer productAvailableQuantity = productAvailableQunatity -
-		// productQuantity;
-		// prod.get().setProductAvailableQuantity(productAvailableQuantity);
-		// invoiceList.add(i);
-		// orderRequest.setInvoiceList(invoiceList);
-		// }
-		// }
-		//
-		// // scenario 2 end
-		//
-		// // System.out.println(mylist.toString());
-		// orderRequest.setOrderTotalQuantity(orderTotalQuantity);
-		// orderRequest.setInvoiceList(invoiceList);
-		// System.out.println(orderRequest);
-		// orderRepository.save(orderRequest);
-
-		// cartRepository.deleteAll(cartList);
-		// System.out.println("cartId=>"+cartList.get(0).getCartId());
 		return null;
 
 	}

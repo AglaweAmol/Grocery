@@ -32,7 +32,7 @@ public class CartController {
 	public Optional<Cart> getAllProductsByCartId(@PathVariable("cartId") Integer cartId) {
 		return cartRepository.findById(cartId);
 	}
-	
+
 	@GetMapping(value = "/cart/customer/{customerId}")
 	public List<Cart> getCartByCustomerId(@PathVariable("customerId") Integer customerId) {
 		return cartRepository.findByCustomerId(customerId);
@@ -40,7 +40,7 @@ public class CartController {
 
 	@PostMapping(value = "/cart")
 	public Cart addCart(@RequestBody Cart cart) {
-		
+
 		System.out.println("CartObject"+cart);
 		return cartRepository.save(cart);
 	}
@@ -49,7 +49,7 @@ public class CartController {
 	public Cart updateCart(@RequestBody Cart cartRequest) {
 		Cart cart = cartRepository.findById(cartRequest.getCartId()).get();
 		cart.setCartProducts(cartRequest.getCartProducts());
-		cart.setTotalPrice(cartRequest.getTotalPrice());
+		cart.setCartTotalPrice(cartRequest.getCartTotalPrice());
 		cart.setCustomerId(cartRequest.getCustomerId());
 		return cartRepository.save(cart);
 	}
