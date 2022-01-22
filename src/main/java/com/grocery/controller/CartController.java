@@ -33,10 +33,10 @@ public class CartController {
 		return cartRepository.findById(cartId);
 	}
 
-	@GetMapping(value = "/cart/customer/{customerId}")
-	public List<Cart> getCartByCustomerId(@PathVariable("customerId") Integer customerId) {
-		return cartRepository.findByCustomerId(customerId);
-	}
+	//	@GetMapping(value = "/cart/customer/{customerId}")
+	//	public List<Cart> getCartByCustomerId(@PathVariable("customerId") Integer customerId) {
+	//		return cartRepository.findByCustomerId(customerId);
+	//	}
 
 	@PostMapping(value = "/cart")
 	public Cart addCart(@RequestBody Cart cart) {

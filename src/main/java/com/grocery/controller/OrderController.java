@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grocery.model.Cart;
+import com.grocery.model.CartProduct;
 import com.grocery.model.Invoice;
 import com.grocery.model.Order;
 import com.grocery.model.OrderResponseModel;
 import com.grocery.model.Product;
 import com.grocery.repository.CartRepository;
 import com.grocery.repository.CustomerAddressRepository;
-import com.grocery.repository.InvoiceRepository;
+import com.grocery.repository.CustomerRepository;
 import com.grocery.repository.OrderRepository;
 import com.grocery.repository.ProductRepository;
 
@@ -42,7 +43,8 @@ public class OrderController {
 	private ProductRepository productRepository;
 
 	@Autowired
-	private InvoiceRepository invoiceRepository;
+	private CustomerRepository customerRepository;
+
 
 	//
 	// @GetMapping(value = "/orders")
@@ -99,44 +101,94 @@ public class OrderController {
 
 	@PostMapping(value = "/orders")
 	public Order addOrder(@RequestBody Order orderRequest) {
-		List<Invoice> orderInvoiceList = orderRequest.getInvoiceList();
+
+
+		//		Integer customerID=orderRequest.getCustomerId();
+
+		Optional<Cart> cart=cartRepository.findByCustomerId(orderRequest.getCustomerId());
+
+
+		//		Double d=cart.get().getCartTotalPrice();
+
+		//		System.out.println(cartlist.get().getCartId());
 
 		List<Invoice> invoiceList = new ArrayList<Invoice>();
-		List<Cart> cartList=cartRepository.findByCustomerId(orderRequest.getCustomerId());
 
-		String successResponse = "Order created Successfully";
+		List<CartProduct> cartProductlist=cart.get().getCartProducts();
 
-		boolean isCheckProductQuantity = true;
-		Integer orderTotalQuantity = 0;
-		// Scenario 1 -
-		for (Invoice i : orderInvoiceList) {
-			Integer productId = i.getProductId();
-			Integer productQuantity = i.getQuantity();
+		//		Invoice invoice;
+
+		for(CartProduct i:cartProductlist)
+		{
+
+			Invoice invoice=new Invoice();
+
+			System.out.println(i.getProductId());
+
+			Integer productId=i.getProductId();
+
 			Optional<Product> prod = productRepository.findById(productId);
-			Integer productAvailableQunatity = prod.get().getProductAvailableQuantity();
 
-			if (productAvailableQunatity < productQuantity) {
-				isCheckProductQuantity = false;
-				System.out.println("Check condidtion is False or true=>" + isCheckProductQuantity);
-			} else {
-				orderTotalQuantity = orderTotalQuantity + productQuantity;
-				Integer productAvailableQuantity = productAvailableQunatity - productQuantity;
-				prod.get().setProductAvailableQuantity(productAvailableQuantity);
-				invoiceList.add(i);
-				orderRequest.setInvoiceList(invoiceList);
-			}
-		}
-		if (isCheckProductQuantity == false) {
-			System.out.println("Requested quantity is too high. Order cannot be saved");
-		} else {
-			orderRequest.setOrderTotalQuantity(orderTotalQuantity);
+			invoice.setProductId(i.getProductId());
+			invoice.setProductTotalAmount(prod.get().getProductBuyingPrice());
+
+			invoiceList.add(invoice);
+
 			orderRequest.setInvoiceList(invoiceList);
-			// System.out.println(orderRequest);
-			System.out.println(successResponse);
-			orderRepository.save(orderRequest);
-			cartRepository.deleteAll(cartList);
-			return orderRequest;
+
 		}
+		orderRequest.setOrderTotal(cart.get().getCartTotalPrice());
+		orderRequest.setOrderTotalQuantity(cart.get().getCartItemQuantity());
+
+
+		System.out.println("Order Request==>"+orderRequest);
+
+		//		orderTotalQuantity
+
+		//		System.out.println("cartList=>"+cartlist.ge);
+
+		//		List<Customer> customer=customerRepository.find
+
+
+
+		//		List<Invoice> orderInvoiceList = orderRequest.getInvoiceList();
+		//
+		//		List<Invoice> invoiceList = new ArrayList<Invoice>();
+		//		List<Cart> cartList = cartRepository.findByCustomerId(orderRequest.getCustomerId());
+		//
+		//		String successResponse = "Order created Successfully";
+		//
+		//		boolean isCheckProductQuantity = true;
+		//		Integer orderTotalQuantity = 0;
+		//		// Scenario 1 -
+		//		for (Invoice i : orderInvoiceList) {
+		//			Integer productId = i.getProductId();
+		//			Integer productQuantity = i.getQuantity();
+		//			Optional<Product> prod = productRepository.findById(productId);
+		//			Integer productAvailableQunatity = prod.get().getProductAvailableQuantity();
+		//
+		//			if (productAvailableQunatity < productQuantity) {
+		//				isCheckProductQuantity = false;
+		//				System.out.println("Check condidtion is False or true=>" + isCheckProductQuantity);
+		//			} else {
+		//				orderTotalQuantity = orderTotalQuantity + productQuantity;
+		//				Integer productAvailableQuantity = productAvailableQunatity - productQuantity;
+		//				prod.get().setProductAvailableQuantity(productAvailableQuantity);
+		//				invoiceList.add(i);
+		//				orderRequest.setInvoiceList(invoiceList);
+		//			}
+		//		}
+		//		if (isCheckProductQuantity == false) {
+		//			System.out.println("Requested quantity is too high. Order cannot be saved");
+		//		} else {
+		//			orderRequest.setOrderTotalQuantity(orderTotalQuantity);
+		//			orderRequest.setInvoiceList(invoiceList);
+		//			// System.out.println(orderRequest);
+		//			System.out.println(successResponse);
+		//			orderRepository.save(orderRequest);
+		//			cartRepository.deleteAll(cartList);
+		//			return orderRequest;
+		//		}
 		return null;
 
 	}

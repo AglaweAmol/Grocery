@@ -18,8 +18,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.Data;
 
 @Data
@@ -36,7 +34,7 @@ public class Cart {
 	private Integer customerId;
 
 	@Column(name="cart_total_price")
-	private Integer cartTotalPrice;
+	private Double cartTotalPrice;
 
 	@Column(name="cart_product_quantity_pricing_id")
 	private Integer cartProductQuantityPricingId;
@@ -55,19 +53,19 @@ public class Cart {
 
 	@CreatedDate
 	@CreationTimestamp
-	@Column(name="cart_created_date",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
+	@Column(name="cart_created_date", updatable = false, insertable = false)
 	private Date cartCreatedDate;
 
 	@LastModifiedDate
 	@UpdateTimestamp
-	@Column(name="cart_last_updated_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
+	@Column(name="cart_last_updated_date", insertable = false)
 	private Date cartLastUpdatedDate;
 
 
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name ="cart_id")
-	@JsonIgnoreProperties({"cartProductId","cartId","cart"})
+	//	@JsonIgnoreProperties({"cartProductId","cartId","cart"})
 	private List<CartProduct> cartProducts;
 
 
