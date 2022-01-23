@@ -29,6 +29,9 @@ public class CartProduct {
 	@Column(name = "product_id")
 	private Integer productId;
 
+	@Column(name ="cart_product_quantity")
+	private Integer cartProductQuantity;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cart_id", updatable = false, insertable = false)
 	@JsonIgnoreProperties("cartProducts")

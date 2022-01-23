@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grocery.model.Cart;
+import com.grocery.model.CartProduct;
+import com.grocery.model.Product;
 import com.grocery.repository.CartRepository;
+import com.grocery.repository.ProductRepository;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -22,6 +25,9 @@ public class CartController {
 
 	@Autowired
 	private CartRepository cartRepository;
+
+	@Autowired
+	private ProductRepository productRepository;
 
 	@GetMapping(value = "/cart")
 	public List<Cart> getAllCart() {
@@ -33,16 +39,36 @@ public class CartController {
 		return cartRepository.findById(cartId);
 	}
 
-	//	@GetMapping(value = "/cart/customer/{customerId}")
-	//	public List<Cart> getCartByCustomerId(@PathVariable("customerId") Integer customerId) {
-	//		return cartRepository.findByCustomerId(customerId);
-	//	}
+	// @GetMapping(value = "/cart/customer/{customerId}")
+	// public List<Cart> getCartByCustomerId(@PathVariable("customerId") Integer
+	// customerId) {
+	// return cartRepository.findByCustomerId(customerId);
+	// }
 
 	@PostMapping(value = "/cart")
-	public Cart addCart(@RequestBody Cart cart) {
+	public Cart addCart(@RequestBody Cart cartRequest) {
 
-		System.out.println("CartObject"+cart);
-		return cartRepository.save(cart);
+		Integer cartItemQuantity = 0;
+		Double CartTotalPrice = 0.0;
+
+		List<CartProduct> cartProductlist = cartRequest.getCartProducts();
+
+		for (CartProduct i : cartProductlist) {
+			Integer cartProductItemQuantity = i.getCartProductQuantity();
+			Integer productId = i.getProductId();
+			Optional<Product> product = productRepository.findById(productId);
+			Double productBuyingPrice = product.get().getProductBuyingPrice();
+			cartItemQuantity = cartItemQuantity + cartProductItemQuantity;
+			Double cartProductQuantityPricing = productBuyingPrice * cartProductItemQuantity;
+			CartTotalPrice = CartTotalPrice + cartProductQuantityPricing;
+		}
+		cartRequest.setCartItemQuantity(cartItemQuantity);
+		cartRequest.setCartTotalPrice(CartTotalPrice);
+		System.out.println(cartRequest);
+		// System.out.println("CartObject"+cartRequest);
+		// return cartRepository.save(cartRequest);
+
+		return null;
 	}
 
 	@PutMapping(value = "/cart")
@@ -58,7 +84,5 @@ public class CartController {
 	public void deleteCartById(@PathVariable("cartId") Integer id) {
 		cartRepository.deleteById(id);
 	}
-
-
 
 }
