@@ -50,21 +50,40 @@ public class CartController {
 
 		Integer cartItemQuantity = 0;
 		Double CartTotalPrice = 0.0;
-
+		boolean isCheckProductQuantity = true;
 		List<CartProduct> cartProductlist = cartRequest.getCartProducts();
 
 		for (CartProduct i : cartProductlist) {
 			Integer cartProductItemQuantity = i.getCartProductQuantity();
 			Integer productId = i.getProductId();
 			Optional<Product> product = productRepository.findById(productId);
-			Double productBuyingPrice = product.get().getProductBuyingPrice();
-			cartItemQuantity = cartItemQuantity + cartProductItemQuantity;
-			Double cartProductQuantityPricing = productBuyingPrice * cartProductItemQuantity;
-			CartTotalPrice = CartTotalPrice + cartProductQuantityPricing;
+			Integer productAvailableQuantity= product.get().getProductAvailableQuantity();
+			if(productAvailableQuantity < cartProductItemQuantity)
+			{
+				isCheckProductQuantity=false;
+				System.out.println("Requested quantity is too high. Order cannot be saved");
+			}
+			else {
+				Double productBuyingPrice = product.get().getProductBuyingPrice();
+				cartItemQuantity = cartItemQuantity + cartProductItemQuantity;
+				Double cartProductQuantityPricing = productBuyingPrice * cartProductItemQuantity;
+				CartTotalPrice = CartTotalPrice + cartProductQuantityPricing;
+
+			}
 		}
-		cartRequest.setCartItemQuantity(cartItemQuantity);
-		cartRequest.setCartTotalPrice(CartTotalPrice);
-		System.out.println(cartRequest);
+		if(isCheckProductQuantity==false)
+		{
+			System.out.println("Requested quantity is too high. Order cannot be saved");
+		}
+		else {
+			cartRequest.setCartItemQuantity(cartItemQuantity);
+			cartRequest.setCartTotalPrice(CartTotalPrice);
+
+			cartRepository.save(cartRequest);
+
+			//		cartRequest.setCustomerId(cartItemQuantity)
+			System.out.println(cartRequest);
+		}
 		// System.out.println("CartObject"+cartRequest);
 		// return cartRepository.save(cartRequest);
 
